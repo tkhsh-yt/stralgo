@@ -12,22 +12,22 @@ jobs:
       - checkout
 
       - run:
-        name: Install JUnit
-        command: go get github.com/jstemmer/go-junit-report
+          name: Install JUnit
+          command: go get github.com/jstemmer/go-junit-report
 
       - run:
-        name: Install Test Library
-        command: go get github.com/stretchr/testify
+          name: Install Test Library
+          command: go get github.com/stretchr/testify
 
       - run:
-        name: Make directory for test
-        command: mkdir -p $TEST_RESULTS
+          name: Make directory for test
+          command: mkdir -p $TEST_RESULTS
 
       - run:
-        name: Run unit tests
-        command: |
+          name: Run unit tests
+          command: |
             trap "go-junit-report <${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/go-test-report.xml" EXIT
             go test | tee ${TEST_RESULTS}/go-test.out
 
       - store_test_result:
-        path: /tmp/test-results
+          path: /tmp/test-results
