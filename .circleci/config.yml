@@ -21,7 +21,7 @@ jobs:
 
       - run:
         name: Make directory for test
-        mkdir -p $TEST_RESULTS
+        command: mkdir -p $TEST_RESULTS
 
       - run:
         name: Run unit tests
