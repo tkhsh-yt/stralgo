@@ -1,0 +1,33 @@
+version: 2
+jobs:
+  build:
+    working_directory: /go/src/github.com/tkhshyt/stralgo
+    docker:
+      - image: circleci/golang:1.9.2
+
+    environment:
+      TEST_RESULTS: /tmp/test-results
+
+    steps:
+      - checkout
+
+      - run:
+        name: Install JUnit
+        command: go get github.com/jstemmer/go-junit-report
+
+      - run:
+        name: Install Test Library
+        command: go get github.com/stretchr/testify
+
+      - run:
+        name: Make directory for test
+        mkdir -p $TEST_RESULTS
+
+      - run:
+        name: Run unit tests
+        command: |
+            trap "go-junit-report <${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/go-test-report.xml" EXIT
+            go test | tee ${TEST_RESULTS}/go-test.out
+
+      - store_test_result:
+        path: /tmp/test-results
